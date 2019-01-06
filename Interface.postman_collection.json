@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "72ec3fd1-052a-9d0f-340c-a91ea2b2d341",
+		"name": "Interface",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"_postman_id": "53003810-3394-40be-922f-d3b02b46ca6e",
+			"name": "OAuth Login - LA",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var access_token = JSON.parse(responseBody).access_token;",
+							"",
+							"postman.setEnvironmentVariable(\"crm-oauthToken\", access_token);",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{crm-environment}}/services/oauth2/token?grant_type=password&client_id={{crm-consumerKey}}&client_secret={{crm-consumerSecret}}&username={{crm-systemAccount}}&password={{crm-systemPassword}}",
+					"protocol": "https",
+					"host": [
+						"{{crm-environment}}"
+					],
+					"path": [
+						"services",
+						"oauth2",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "password"
+						},
+						{
+							"key": "client_id",
+							"value": "{{crm-consumerKey}}"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{crm-consumerSecret}}"
+						},
+						{
+							"key": "username",
+							"value": "{{crm-systemAccount}}"
+						},
+						{
+							"key": "password",
+							"value": "{{crm-systemPassword}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "b1f448f7-943a-44db-8a5d-d608b4f32aaf",
+			"name": "Test REST API - GET",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "OAuth {{crm-oauthToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"price\":[\n      {\n         \"productName\":\"00A3524\",\n         \"country\":\"US\",\n         \"salesOrg\":\"US10\",\n         \"salesOffice\":\"US20\",\n         \"channelPrice\":520.00,\n         \"listPrice\":650.00,\n         \"currencyCode\":\"USD\",\n         \"startDate\":\"20160110\",\n         \"stopDate\":\"99991231\"\n      }\n   ]\n}"
+				},
+				"url": "{{crm-baseUrl}}/services/apexrest/rest"
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "4efaa4d6-aab9-4f83-bafb-c47b69ec91a1",
+			"name": "Test REST API - POST",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "OAuth {{crm-oauthToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"model1\":\r\n      {\r\n         \"First\":\"Hi\",\r\n         \"Last\":\"REST API\"\r\n      }\r\n}"
+				},
+				"url": "{{crm-baseUrl}}/services/apexrest/rest"
+			},
+			"response": []
+		}
+	]
+}
